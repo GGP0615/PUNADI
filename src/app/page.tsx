@@ -803,8 +803,8 @@ export default function Home() {
             <div className="grid grid-cols-1 gap-10 sm:grid-cols-3">
               {/* Col 1 — Brand */}
               <div>
-                <div className="flex items-center gap-2.5">
-                  <PunadiLogo className="h-7 w-7" />
+                <div className="flex items-center gap-3">
+                  <PunadiLogo className="h-10 w-10" />
                   <span className="font-[var(--font-space-grotesk)] text-base font-bold text-white">
                     Punadi
                   </span>

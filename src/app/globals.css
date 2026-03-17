@@ -619,6 +619,22 @@
   animation: fragment-exit-right 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
+/* Mobile: single wall fades + scales down instead of splitting */
+@keyframes fragment-fade {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+}
+
+.wall-fragment-fade {
+  animation: fragment-fade 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
 /* ═══ DUST PARTICLES ═══ */
 @keyframes dust-burst {
   0% {

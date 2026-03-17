@@ -347,21 +347,13 @@ export function ChaosWall({ onComplete }: ChaosWallProps) {
         </svg>
       )}
 
-      {/* LEFT WALL HALF */}
-      <div
-        className={`absolute inset-0 ${isExiting ? "wall-fragment-left" : ""}`}
-        style={{
-          clipPath: "polygon(0 0, 50% 0, 50% 100%, 0 100%)",
-          transform: !isExiting
-            ? `translate(${mousePos.x * -3}px, ${mousePos.y * -2}px)`
-            : undefined,
-          transition: !isExiting ? "transform 0.3s ease-out" : undefined,
-        }}
-      >
-        <div className="concrete-wall absolute inset-0" />
-        {snippets
-          .filter((s) => s.x < 50)
-          .map((snippet) => (
+      {/* MOBILE: single full-width wall (no clip-path split = no text clipping) */}
+      {isMobile ? (
+        <div
+          className={`absolute inset-0 ${isExiting ? "wall-fragment-fade" : ""}`}
+        >
+          <div className="concrete-wall absolute inset-0" />
+          {snippets.map((snippet) => (
             <ChaosText
               key={snippet.id}
               snippet={snippet}
@@ -371,33 +363,62 @@ export function ChaosWall({ onComplete }: ChaosWallProps) {
               showCorrection={showCorrections}
             />
           ))}
-      </div>
+        </div>
+      ) : (
+        <>
+          {/* DESKTOP: LEFT WALL HALF */}
+          <div
+            className={`absolute inset-0 ${isExiting ? "wall-fragment-left" : ""}`}
+            style={{
+              clipPath: "polygon(0 0, 50% 0, 50% 100%, 0 100%)",
+              transform: !isExiting
+                ? `translate(${mousePos.x * -3}px, ${mousePos.y * -2}px)`
+                : undefined,
+              transition: !isExiting ? "transform 0.3s ease-out" : undefined,
+            }}
+          >
+            <div className="concrete-wall absolute inset-0" />
+            {snippets
+              .filter((s) => s.x < 50)
+              .map((snippet) => (
+                <ChaosText
+                  key={snippet.id}
+                  snippet={snippet}
+                  phase={phase}
+                  sizeClass={sizeClass[snippet.size]}
+                  mousePos={mousePos}
+                  showCorrection={showCorrections}
+                />
+              ))}
+          </div>
 
-      {/* RIGHT WALL HALF */}
-      <div
-        className={`absolute inset-0 ${isExiting ? "wall-fragment-right" : ""}`}
-        style={{
-          clipPath: "polygon(50% 0, 100% 0, 100% 100%, 50% 100%)",
-          transform: !isExiting
-            ? `translate(${mousePos.x * -3}px, ${mousePos.y * -2}px)`
-            : undefined,
-          transition: !isExiting ? "transform 0.3s ease-out" : undefined,
-        }}
-      >
-        <div className="concrete-wall absolute inset-0" />
-        {snippets
-          .filter((s) => s.x >= 50)
-          .map((snippet) => (
-            <ChaosText
-              key={snippet.id}
-              snippet={snippet}
-              phase={phase}
-              sizeClass={sizeClass[snippet.size]}
-              mousePos={mousePos}
-              showCorrection={showCorrections}
-            />
-          ))}
-      </div>
+          {/* DESKTOP: RIGHT WALL HALF */}
+          <div
+            className={`absolute inset-0 ${isExiting ? "wall-fragment-right" : ""}`}
+            style={{
+              clipPath: "polygon(50% 0, 100% 0, 100% 100%, 50% 100%)",
+              transform: !isExiting
+                ? `translate(${mousePos.x * -3}px, ${mousePos.y * -2}px)`
+                : undefined,
+              transition: !isExiting ? "transform 0.3s ease-out" : undefined,
+            }}
+          >
+            <div className="concrete-wall absolute inset-0" />
+            {snippets
+              .filter((s) => s.x >= 50)
+              .map((snippet) => (
+                <ChaosText
+                  key={snippet.id}
+                  snippet={snippet}
+                  phase={phase}
+                  sizeClass={sizeClass[snippet.size]}
+                  mousePos={mousePos}
+                  showCorrection={showCorrections}
+                />
+              ))}
+          </div>
+        </>
+      )}
 
       {/* Light bleed through crack */}
       {isExiting && (
@@ -462,7 +483,7 @@ function ChaosText({
 
   return (
     <span
-      className={`absolute font-[var(--font-space-grotesk)] text-white/80 whitespace-nowrap
+      className={`absolute font-[var(--font-space-grotesk)] text-white/80 md:whitespace-nowrap
         chaos-text-etch ${sizeClass}
         ${phase === "tension" ? "number-jitter" : ""}
       `}

@@ -211,27 +211,27 @@ export default function Home() {
 
         {/* ═══ STATS BAR ═══ */}
         <section className="relative z-10 border-y border-white/5 bg-[#0A0A0A]">
-          <div className="mx-auto max-w-6xl px-6 py-16">
-            <div className="grid grid-cols-2 gap-8 lg:grid-cols-4">
+          <div className="mx-auto max-w-6xl px-6 py-12 sm:py-16">
+            <div className="grid grid-cols-2 gap-x-6 gap-y-10 lg:grid-cols-4 lg:gap-8">
               <div className="text-center">
                 <FlipCounter
                   value={45}
                   suffix="L+"
                   className="justify-center font-[var(--font-space-grotesk)] text-4xl font-bold text-amber-400 sm:text-5xl"
                 />
-                <p className="mt-2 text-sm text-[#737373]">
-                  houses built in India every year
+                <p className="mt-2 text-xs sm:text-sm text-[#737373]">
+                  houses built yearly
                 </p>
               </div>
-              <ZeroStat label="apps built for Indian homeowners" />
+              <ZeroStat label="apps for homeowners" />
               <div className="text-center">
                 <FlipCounter
                   value={72}
                   suffix="%"
                   className="justify-center font-[var(--font-space-grotesk)] text-4xl font-bold text-amber-400 sm:text-5xl"
                 />
-                <p className="mt-2 text-sm text-[#737373]">
-                  of builds exceed their budget
+                <p className="mt-2 text-xs sm:text-sm text-[#737373]">
+                  over budget
                 </p>
               </div>
               <div className="text-center">
@@ -240,8 +240,8 @@ export default function Home() {
                   suffix="+"
                   className="justify-center font-[var(--font-space-grotesk)] text-4xl font-bold text-amber-400 sm:text-5xl"
                 />
-                <p className="mt-2 text-sm text-[#737373]">
-                  months of chaos without a system
+                <p className="mt-2 text-xs sm:text-sm text-[#737373]">
+                  months of chaos
                 </p>
               </div>
             </div>

@@ -136,7 +136,7 @@ export function ZeroStat({ label }: { label: string }) {
           />
         )}
       </div>
-      <p className="mt-2 text-sm text-[#737373]">{label}</p>
+      <p className="mt-2 text-xs sm:text-sm text-[#737373]">{label}</p>
     </div>
   );
 }

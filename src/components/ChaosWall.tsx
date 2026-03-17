@@ -132,12 +132,13 @@ const SNIPPETS: ChaosSnippet[] = [
 
 // Mobile: completely different layout — fewer snippets, bigger text, centered and readable
 // Positions optimized for portrait phone screens (stacked vertically, within safe zone)
+// Mobile: completely different layout — fewer snippets, bigger text, spread across both sides
 const MOBILE_SNIPPETS: ChaosSnippet[] = [
-  // Wave 1: Two small background scribbles
+  // Wave 1: Background scribbles — one left, one right
   {
     id: 9, wave: 1,
-    lines: [{ text: "4500 + 3200 + 1800 = ?" }],
-    x: 8, y: 15, rotate: -2, size: "md", opacity: 0.4, delay: 200,
+    lines: [{ text: "4500 + 3200 = ?" }],
+    x: 50, y: 12, rotate: 2, size: "md", opacity: 0.4, delay: 200,
   },
   {
     id: 12, wave: 1,
@@ -145,22 +146,22 @@ const MOBILE_SNIPPETS: ChaosSnippet[] = [
       { text: "budget: 24L  " },
       { text: "actual: ???", className: "text-red-400/60" },
     ],
-    x: 45, y: 80, rotate: 2, size: "md", opacity: 0.45, delay: 500,
+    x: 8, y: 82, rotate: -1.5, size: "md", opacity: 0.45, delay: 500,
   },
-  // Wave 2: One secondary fill
+  // Wave 2: Secondary — right side
   {
     id: 5, wave: 2,
     lines: [{ text: "paid cash — no receipt" }],
-    x: 10, y: 48, rotate: -1.5, size: "md", opacity: 0.6, delay: 1000,
+    x: 40, y: 45, rotate: 2, size: "md", opacity: 0.6, delay: 1000,
   },
-  // Wave 3: The three gut-punches — BIG and readable
+  // Wave 3: Gut-punches — alternate left and right
   {
     id: 1, wave: 3,
     lines: [
       { text: "₹4,500", className: "chaos-strikethrough" },
       { text: "  ₹5,400?", className: "text-red-400/80" },
     ],
-    x: 8, y: 25, rotate: -1.5, size: "lg", opacity: 0.9, delay: 1400,
+    x: 6, y: 24, rotate: -1.5, size: "lg", opacity: 0.9, delay: 1400,
   },
   {
     id: 3, wave: 3,
@@ -170,12 +171,12 @@ const MOBILE_SNIPPETS: ChaosSnippet[] = [
       { text: " ₹22L", className: "chaos-strikethrough" },
       { text: " ???", className: "text-red-400/90" },
     ],
-    x: 12, y: 55, rotate: 1, size: "lg", opacity: 0.9, delay: 1800,
+    x: 10, y: 55, rotate: 1, size: "lg", opacity: 0.9, delay: 1800,
   },
   {
     id: 4, wave: 3,
     lines: [{ text: 'Amma: "kitna hua?"', className: "italic" }],
-    x: 15, y: 70, rotate: -1, size: "lg", opacity: 0.8, delay: 2100,
+    x: 35, y: 70, rotate: -1, size: "lg", opacity: 0.8, delay: 2100,
   },
 ];
 

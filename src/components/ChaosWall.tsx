@@ -221,31 +221,48 @@ export function ChaosWall({ onComplete }: ChaosWallProps) {
   }, [prefersReducedMotion, onComplete]);
 
   // ── Phase timeline ──
-  // Last desktop snippet appears at 2900ms, needs ~2s to read → tension at 5000
-  // Last mobile snippet appears at 2100ms, needs ~2s to read → tension at 4200
-  // Desktop: building(0) → tension(5000) → cracking(7500) → revealed(8700) → done(9900)
-  // Mobile:  building(0) → tension(4200) → cracking(6200) → revealed(7300) → done(8400)
+  // MOBILE: Text keeps appearing, then CRACK — no tension phase, just surprise.
+  //   Last snippet at 2100ms + ~1.5s to read = crack at 3600ms. Fast exit.
+  //   building(0) → cracking(3600) → revealed(4300) → done(5000)
+  // DESKTOP: Full narrative arc with tension hold.
+  //   Last snippet at 2900ms + 1.5s to read → tension at 4500 → crack at 6500
+  //   building(0) → tension(4500) → cracking(6500) → revealed(7700) → done(8800)
   useEffect(() => {
     if (prefersReducedMotion) return;
 
     const mobile = window.innerWidth < 768;
-    const t = mobile
-      ? { tension: 4200, corrections: 4800, cracking: 6200, revealed: 7300, done: 8400 }
-      : { tension: 5000, corrections: 5800, cracking: 7500, revealed: 8700, done: 9900 };
 
-    const timers = [
-      setTimeout(() => setPhase("tension"), t.tension),
-      setTimeout(() => setShowCorrections(true), t.corrections),
-      setTimeout(() => setPhase("cracking"), t.cracking),
-      setTimeout(() => {
-        setPhase("revealed");
-        if (!completeCalled.current) {
-          completeCalled.current = true;
-          onComplete();
-        }
-      }, t.revealed),
-      setTimeout(() => setPhase("done"), t.done),
-    ];
+    const timers: ReturnType<typeof setTimeout>[] = [];
+
+    if (mobile) {
+      // Mobile: text appears → CRACK (no tension, no corrections)
+      timers.push(
+        setTimeout(() => setPhase("cracking"), 3600),
+        setTimeout(() => {
+          setPhase("revealed");
+          if (!completeCalled.current) {
+            completeCalled.current = true;
+            onComplete();
+          }
+        }, 4300),
+        setTimeout(() => setPhase("done"), 5000),
+      );
+    } else {
+      // Desktop: full narrative with tension hold
+      timers.push(
+        setTimeout(() => setPhase("tension"), 4500),
+        setTimeout(() => setShowCorrections(true), 5200),
+        setTimeout(() => setPhase("cracking"), 6500),
+        setTimeout(() => {
+          setPhase("revealed");
+          if (!completeCalled.current) {
+            completeCalled.current = true;
+            onComplete();
+          }
+        }, 7700),
+        setTimeout(() => setPhase("done"), 8800),
+      );
+    }
 
     return () => timers.forEach(clearTimeout);
   }, [onComplete, prefersReducedMotion]);

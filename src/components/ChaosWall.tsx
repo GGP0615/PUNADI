@@ -130,7 +130,54 @@ const SNIPPETS: ChaosSnippet[] = [
   },
 ];
 
-const MOBILE_IDS = new Set([1, 2, 3, 4, 5, 6, 7, 9, 12]);
+// Mobile: completely different layout — fewer snippets, bigger text, centered and readable
+// Positions optimized for portrait phone screens (stacked vertically, within safe zone)
+const MOBILE_SNIPPETS: ChaosSnippet[] = [
+  // Wave 1: Two small background scribbles
+  {
+    id: 9, wave: 1,
+    lines: [{ text: "4500 + 3200 + 1800 = ?" }],
+    x: 8, y: 15, rotate: -2, size: "md", opacity: 0.4, delay: 200,
+  },
+  {
+    id: 12, wave: 1,
+    lines: [
+      { text: "budget: 24L  " },
+      { text: "actual: ???", className: "text-red-400/60" },
+    ],
+    x: 45, y: 80, rotate: 2, size: "md", opacity: 0.45, delay: 500,
+  },
+  // Wave 2: One secondary fill
+  {
+    id: 5, wave: 2,
+    lines: [{ text: "paid cash — no receipt" }],
+    x: 10, y: 48, rotate: -1.5, size: "md", opacity: 0.6, delay: 1000,
+  },
+  // Wave 3: The three gut-punches — BIG and readable
+  {
+    id: 1, wave: 3,
+    lines: [
+      { text: "₹4,500", className: "chaos-strikethrough" },
+      { text: "  ₹5,400?", className: "text-red-400/80" },
+    ],
+    x: 8, y: 25, rotate: -1.5, size: "lg", opacity: 0.9, delay: 1400,
+  },
+  {
+    id: 3, wave: 3,
+    lines: [
+      { text: "TOTAL: " },
+      { text: "₹18L", className: "chaos-strikethrough" },
+      { text: " ₹22L", className: "chaos-strikethrough" },
+      { text: " ???", className: "text-red-400/90" },
+    ],
+    x: 12, y: 55, rotate: 1, size: "lg", opacity: 0.9, delay: 1800,
+  },
+  {
+    id: 4, wave: 3,
+    lines: [{ text: 'Amma: "kitna hua?"', className: "italic" }],
+    x: 15, y: 70, rotate: -1, size: "lg", opacity: 0.8, delay: 2100,
+  },
+];
 
 // Precompute dust particles to avoid random-on-render issues
 const DUST_PARTICLES = Array.from({ length: 20 }, (_, i) => ({
@@ -224,15 +271,11 @@ export function ChaosWall({ onComplete }: ChaosWallProps) {
 
   if (phase === "done") return null;
 
-  const snippets = isMobile
-    ? SNIPPETS.filter((s) => MOBILE_IDS.has(s.id))
-    : SNIPPETS;
+  const snippets = isMobile ? MOBILE_SNIPPETS : SNIPPETS;
 
-  const sizeClass = {
-    sm: "text-xs md:text-sm",
-    md: "text-sm md:text-lg",
-    lg: "text-lg md:text-2xl font-semibold",
-  };
+  const sizeClass = isMobile
+    ? { sm: "text-sm", md: "text-base", lg: "text-xl font-semibold" }
+    : { sm: "text-xs md:text-sm", md: "text-sm md:text-lg", lg: "text-lg md:text-2xl font-semibold" };
 
   const isExiting = phase === "cracking" || phase === "revealed";
 

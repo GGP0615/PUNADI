@@ -1,7 +1,12 @@
-import { kv } from "@vercel/kv";
+import { createClient } from "@vercel/kv";
 import { NextResponse } from "next/server";
 
 const KV_KEY = "punadi:waitlist";
+
+const kv = createClient({
+  url: process.env.PUNADI_KV_REST_API_URL!,
+  token: process.env.PUNADI_KV_REST_API_TOKEN!,
+});
 
 export async function POST(request: Request) {
   try {

@@ -93,7 +93,16 @@ export function HeroScene() {
   }
 
   return (
-    <div className="relative h-screen w-full">
+    <div
+      className="hero-spotlight relative h-screen w-full"
+      onMouseMove={(e) => {
+        const rect = e.currentTarget.getBoundingClientRect();
+        const x = ((e.clientX - rect.left) / rect.width) * 100;
+        const y = ((e.clientY - rect.top) / rect.height) * 100;
+        e.currentTarget.style.setProperty("--spotlight-x", `${x}%`);
+        e.currentTarget.style.setProperty("--spotlight-y", `${y}%`);
+      }}
+    >
       <Canvas
         shadows
         camera={{ position: [0, 0, 8], fov: 45 }}
@@ -105,6 +114,9 @@ export function HeroScene() {
           <SceneContent />
         </Suspense>
       </Canvas>
+
+      {/* Light beam sweep */}
+      <div className="light-beam" />
 
       {/* Soft vignette */}
       <div
@@ -152,7 +164,7 @@ export function HeroScene() {
           <a
             href="#waitlist"
             data-cursor="cta"
-            className="group flex items-center gap-2 rounded-full bg-gradient-to-r from-amber-500 to-amber-600 px-8 py-3.5 text-base font-semibold text-white shadow-lg shadow-amber-600/25 transition-all hover:scale-105 hover:shadow-xl hover:shadow-amber-600/40"
+            className="cta-glow group flex items-center gap-2 rounded-full bg-gradient-to-r from-amber-500 to-amber-600 px-8 py-3.5 text-base font-semibold text-white transition-all hover:scale-105"
           >
             Join the Waitlist
             <svg

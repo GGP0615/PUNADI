@@ -249,7 +249,7 @@ export default function Home() {
         </section>
 
         {/* ═══ SECTION 2 — THE PROBLEM ═══ */}
-        <section id="problem" className="relative z-10 py-28 sm:py-36">
+        <section id="problem" className="section-glow-divider relative z-10 py-28 sm:py-36">
           <div className="relative mx-auto max-w-4xl px-6">
             <motion.div
               initial="hidden"
@@ -344,7 +344,7 @@ export default function Home() {
         {/* ═══ SECTION 3 — THE TURN ═══ */}
         <section
           id="solution"
-          className="relative z-10 overflow-hidden py-28 sm:py-36"
+          className="section-glow-divider relative z-10 overflow-hidden py-28 sm:py-36"
         >
           <div className="relative mx-auto max-w-5xl px-6">
             <motion.div
@@ -394,7 +394,7 @@ export default function Home() {
         {/* ═══ HOW IT WORKS — Quick 3 Steps ═══ */}
         <section
           id="features"
-          className="relative z-10 border-t border-white/5 py-24 sm:py-32"
+          className="section-glow-divider relative z-10 border-t border-white/5 py-24 sm:py-32"
         >
           <div className="mx-auto max-w-5xl px-6">
             <motion.div

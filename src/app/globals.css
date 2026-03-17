@@ -276,6 +276,123 @@
               0 0 20px rgba(245, 158, 11, 0.05);
 }
 
+/* ═══ CURSOR SPOTLIGHT ═══ */
+.hero-spotlight {
+  --spotlight-x: 50%;
+  --spotlight-y: 50%;
+  position: relative;
+}
+
+.hero-spotlight::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(
+    600px circle at var(--spotlight-x) var(--spotlight-y),
+    rgba(193, 120, 23, 0.06) 0%,
+    rgba(193, 120, 23, 0.02) 25%,
+    transparent 60%
+  );
+  transition: opacity 0.3s ease;
+  opacity: 0;
+}
+
+.hero-spotlight:hover::before {
+  opacity: 1;
+}
+
+/* ═══ SWEEPING LIGHT BEAM ═══ */
+@keyframes light-sweep {
+  0% {
+    transform: translateX(-100%) rotate(-25deg);
+  }
+  100% {
+    transform: translateX(200%) rotate(-25deg);
+  }
+}
+
+.light-beam {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.light-beam::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 40%;
+  height: 200%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(212, 134, 10, 0.03) 40%,
+    rgba(212, 134, 10, 0.06) 50%,
+    rgba(212, 134, 10, 0.03) 60%,
+    transparent 100%
+  );
+  animation: light-sweep 8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  animation-delay: 2s;
+}
+
+/* ═══ CTA GLOW PULSE ═══ */
+@keyframes cta-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(245, 158, 11, 0.2),
+                0 0 60px rgba(245, 158, 11, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(245, 158, 11, 0.35),
+                0 0 80px rgba(245, 158, 11, 0.15),
+                0 0 120px rgba(245, 158, 11, 0.05);
+  }
+}
+
+.cta-glow {
+  animation: cta-glow 3s ease-in-out infinite;
+}
+
+/* ═══ SECTION DIVIDER GLOW ═══ */
+.section-glow-divider {
+  position: relative;
+}
+
+.section-glow-divider::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 300px;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(193, 120, 23, 0.4) 50%,
+    transparent 100%
+  );
+}
+
+.section-glow-divider::after {
+  content: "";
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200px;
+  height: 40px;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(193, 120, 23, 0.08) 0%,
+    transparent 70%
+  );
+}
+
 /* ═══ REDUCED MOTION ═══ */
 @media (prefers-reduced-motion: reduce) {
   .gradient-text-animated {

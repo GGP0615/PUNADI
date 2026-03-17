@@ -221,15 +221,17 @@ export function ChaosWall({ onComplete }: ChaosWallProps) {
   }, [prefersReducedMotion, onComplete]);
 
   // ── Phase timeline ──
-  // Desktop: building(0) → tension(3000) → cracking(5000) → revealed(6200) → done(7400)
-  // Mobile:  building(0) → tension(2200) → cracking(3800) → revealed(4700) → done(5600)
+  // Last desktop snippet appears at 2900ms, needs ~2s to read → tension at 5000
+  // Last mobile snippet appears at 2100ms, needs ~2s to read → tension at 4200
+  // Desktop: building(0) → tension(5000) → cracking(7500) → revealed(8700) → done(9900)
+  // Mobile:  building(0) → tension(4200) → cracking(6200) → revealed(7300) → done(8400)
   useEffect(() => {
     if (prefersReducedMotion) return;
 
     const mobile = window.innerWidth < 768;
     const t = mobile
-      ? { tension: 2200, corrections: 2600, cracking: 3800, revealed: 4700, done: 5600 }
-      : { tension: 3000, corrections: 3600, cracking: 5000, revealed: 6200, done: 7400 };
+      ? { tension: 4200, corrections: 4800, cracking: 6200, revealed: 7300, done: 8400 }
+      : { tension: 5000, corrections: 5800, cracking: 7500, revealed: 8700, done: 9900 };
 
     const timers = [
       setTimeout(() => setPhase("tension"), t.tension),

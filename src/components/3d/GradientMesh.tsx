@@ -101,10 +101,10 @@ export function GradientMesh() {
     const elapsed = state.clock.getElapsedTime();
     mat.uniforms.uTime.value = elapsed;
     mat.uniforms.uScroll.value = scrollProgress.get();
-    // Wall phase: 0→1 over first 4s (tension red), then 1→0 over 2s (back to warm after crack)
-    const wallPhase = elapsed < 4.0
-      ? Math.min(elapsed / 3.0, 1.0)
-      : Math.max(1.0 - (elapsed - 4.0) / 2.0, 0.0);
+    // Wall phase: 0→1 over first 6s (tension red), then 1→0 over 3s (back to warm after crack)
+    const wallPhase = elapsed < 6.0
+      ? Math.min(elapsed / 5.0, 1.0)
+      : Math.max(1.0 - (elapsed - 6.0) / 3.0, 0.0);
     mat.uniforms.uWallPhase.value = wallPhase;
   });
 

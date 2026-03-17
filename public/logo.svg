@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <!-- Geometric cornerstone block in 2.5D isometric perspective -->
+  <!-- Main face (front) -->
+  <path d="M4 12 L20 12 L20 28 L4 28 Z" rx="2" fill="url(#mainFace)" />
+  <!-- Top face (lit) -->
+  <path d="M4 12 L16 4 L28 8 L20 12 Z" fill="url(#topFace)" />
+  <!-- Side face (right) -->
+  <path d="M20 12 L28 8 L28 24 L20 28 Z" fill="url(#sideFace)" />
+  <!-- Negative-space P: vertical bar + bowl -->
+  <rect x="8" y="15" width="3" height="10" rx="0.5" fill="rgba(255,255,255,0.18)" />
+  <path d="M8 15 L15 15 Q17.5 15 17.5 18 Q17.5 21 15 21 L11 21 L11 18 L14 18 Q14.5 18 14.5 17.5 Q14.5 17 14 17 L11 17 L11 15 Z" fill="rgba(255,255,255,0.18)" />
+  <defs>
+    <linearGradient id="mainFace" x1="4" y1="12" x2="20" y2="28" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#C17817" />
+      <stop offset="100%" stop-color="#92510F" />
+    </linearGradient>
+    <linearGradient id="topFace" x1="4" y1="4" x2="28" y2="12" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#D4941F" />
+      <stop offset="100%" stop-color="#C17817" />
+    </linearGradient>
+    <linearGradient id="sideFace" x1="20" y1="8" x2="28" y2="28" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#B06A14" />
+      <stop offset="100%" stop-color="#7A4410" />
+    </linearGradient>
+  </defs>
+</svg>

@@ -77,7 +77,7 @@ const fragmentShader = `
     // Only visible in hero section, fade out as you scroll
     float heroFade = 1.0 - smoothstep(0.0, 0.15, s);
 
-    gl_FragColor = vec4(color * vig, 0.04 * heroFade);
+    gl_FragColor = vec4(color * vig, 0.10 * heroFade);
   }
 `;
 

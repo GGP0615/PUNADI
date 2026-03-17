@@ -49,7 +49,7 @@ const fragmentShader = `
     // Soft circle
     float dist = length(gl_PointCoord - vec2(0.5));
     if (dist > 0.5) discard;
-    float alpha = smoothstep(0.5, 0.2, dist) * vAlpha * 0.12;
+    float alpha = smoothstep(0.5, 0.2, dist) * vAlpha * 0.25;
     gl_FragColor = vec4(uColor, alpha);
   }
 `;

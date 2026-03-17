@@ -14,9 +14,9 @@ function CameraRig() {
 
   useFrame((state) => {
     const t = state.clock.getElapsedTime();
-    camera.position.x = Math.sin(t * 0.1) * 0.3;
-    camera.position.y = 3 + Math.sin(t * 0.15) * 0.2;
-    camera.lookAt(0, 0, 0);
+    camera.position.x = Math.sin(t * 0.1) * 0.4;
+    camera.position.y = 2 + Math.sin(t * 0.15) * 0.15;
+    camera.lookAt(0, 0.5, 0);
   });
 
   return null;
@@ -32,13 +32,13 @@ function SmartDirectionalLight() {
 
     if (istHour >= 6 && istHour < 9) {
       lightRef.current.color.set("#FFF8E8");
-      lightRef.current.intensity = 1.4;
+      lightRef.current.intensity = 1.8;
     } else if (istHour >= 18 && istHour < 21) {
       lightRef.current.color.set("#FFD4A0");
-      lightRef.current.intensity = 1.0;
+      lightRef.current.intensity = 1.4;
     } else if (istHour >= 21 || istHour < 6) {
       lightRef.current.color.set("#E0E8FF");
-      lightRef.current.intensity = 0.8;
+      lightRef.current.intensity = 1.0;
     }
   }, []);
 
@@ -46,7 +46,7 @@ function SmartDirectionalLight() {
     <directionalLight
       ref={lightRef}
       position={[5, 8, 5]}
-      intensity={1.2}
+      intensity={1.6}
       castShadow
       shadow-mapSize={[1024, 1024]}
       color="#FFF5E6"
@@ -56,36 +56,36 @@ function SmartDirectionalLight() {
 
 function SceneContent() {
   const [tier, setTier] = useState<"high" | "medium" | "low">("medium");
-  // Stagger heavy loads: particles + post-processing come in after physics settles
   const [showExtras, setShowExtras] = useState(false);
 
   useEffect(() => {
     setTier(getDeviceTier());
-    // Let physics initialize and first paint happen, then add particles + effects
     const timer = setTimeout(() => setShowExtras(true), 500);
     return () => clearTimeout(timer);
   }, []);
 
-  const materialCount = tier === "low" ? 30 : 50;
-  const particleCount = tier === "high" ? 400 : tier === "medium" ? 200 : 80;
+  const materialCount = tier === "low" ? 35 : 60;
+  const particleCount = tier === "high" ? 500 : tier === "medium" ? 250 : 100;
 
   return (
     <>
-      {/* Lighting */}
-      <ambientLight intensity={0.3} />
+      {/* Lighting — brighter so materials are clearly visible */}
+      <ambientLight intensity={0.5} />
       <SmartDirectionalLight />
-      <pointLight position={[-3, 4, -3]} intensity={0.5} color="#C17817" />
-      <pointLight position={[3, 2, 3]} intensity={0.3} color="#1A6B6A" />
+      <pointLight position={[-3, 4, -3]} intensity={0.8} color="#C17817" />
+      <pointLight position={[3, 2, 3]} intensity={0.5} color="#1A6B6A" />
+      {/* Rim light from behind for edge definition */}
+      <pointLight position={[0, 3, -5]} intensity={0.4} color="#FFD4A0" />
 
       {/* Camera rig */}
       <CameraRig />
 
-      {/* Physics-based falling materials — loads immediately */}
+      {/* Physics-based falling materials */}
       <Physics gravity={[0, -9.81, 0]}>
         <AssemblingHouse count={materialCount} />
       </Physics>
 
-      {/* These load after physics is running to prevent jank */}
+      {/* Delayed extras */}
       {showExtras && (
         <>
           <GradientMesh />
@@ -115,7 +115,7 @@ export function HeroScene() {
     <div className="relative h-screen w-full">
       <Canvas
         shadows
-        camera={{ position: [0, 3, 10], fov: 50 }}
+        camera={{ position: [0, 2, 7], fov: 55 }}
         dpr={[1, 2]}
         gl={{ antialias: true, alpha: true }}
         style={{ background: "#0A0A0A" }}
@@ -125,11 +125,11 @@ export function HeroScene() {
         </Suspense>
       </Canvas>
 
-      {/* CSS Vignette + subtle bloom glow (replaces postprocessing) */}
+      {/* CSS Vignette — softer so materials show through */}
       <div
         className="pointer-events-none absolute inset-0 z-[1]"
         style={{
-          boxShadow: "inset 0 0 150px 60px rgba(0,0,0,0.7)",
+          boxShadow: "inset 0 0 120px 40px rgba(0,0,0,0.5)",
         }}
       />
 
@@ -137,9 +137,9 @@ export function HeroScene() {
       <div className="pointer-events-none absolute inset-0 z-[2] flex flex-col items-center justify-center">
         <div
           className="animate-fade-in-up opacity-0"
-          style={{ animationDelay: "3s", animationFillMode: "forwards" }}
+          style={{ animationDelay: "2.5s", animationFillMode: "forwards" }}
         >
-          <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-amber-500/20 bg-amber-500/5 px-4 py-1.5 backdrop-blur-sm">
+          <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-amber-500/20 bg-amber-500/10 px-4 py-1.5 backdrop-blur-md">
             <span className="text-xs font-medium text-amber-400 telugu-typewriter">
               పునాది — Foundation
             </span>
@@ -147,8 +147,8 @@ export function HeroScene() {
         </div>
 
         <h1
-          className="animate-fade-in-up font-[var(--font-space-grotesk)] text-6xl font-bold tracking-tight text-white opacity-0 sm:text-7xl lg:text-8xl"
-          style={{ animationDelay: "3.3s", animationFillMode: "forwards" }}
+          className="animate-fade-in-up font-[var(--font-space-grotesk)] text-6xl font-bold tracking-tight text-white opacity-0 sm:text-7xl lg:text-8xl drop-shadow-[0_2px_20px_rgba(0,0,0,0.8)]"
+          style={{ animationDelay: "2.8s", animationFillMode: "forwards" }}
         >
           <span className="block">Every rupee.</span>
           <span className="block gradient-text-animated">
@@ -157,8 +157,8 @@ export function HeroScene() {
         </h1>
 
         <p
-          className="animate-fade-in-up mt-6 max-w-lg px-6 text-center text-lg text-[#A3A3A3] opacity-0"
-          style={{ animationDelay: "3.6s", animationFillMode: "forwards" }}
+          className="animate-fade-in-up mt-6 max-w-lg px-6 text-center text-lg text-[#A3A3A3] opacity-0 drop-shadow-[0_1px_8px_rgba(0,0,0,0.9)]"
+          style={{ animationDelay: "3.1s", animationFillMode: "forwards" }}
         >
           Track your house construction. Every expense. Every material. Every
           day.
@@ -166,7 +166,7 @@ export function HeroScene() {
 
         <div
           className="animate-fade-in-up pointer-events-auto mt-8 flex gap-4 opacity-0"
-          style={{ animationDelay: "3.9s", animationFillMode: "forwards" }}
+          style={{ animationDelay: "3.4s", animationFillMode: "forwards" }}
         >
           <a
             href="#waitlist"
@@ -193,7 +193,7 @@ export function HeroScene() {
         {/* Scroll indicator */}
         <div
           className="animate-fade-in-up absolute bottom-8 opacity-0"
-          style={{ animationDelay: "4.5s", animationFillMode: "forwards" }}
+          style={{ animationDelay: "4s", animationFillMode: "forwards" }}
         >
           <div className="flex flex-col items-center gap-2">
             <span className="text-xs text-[#525252]">Scroll to explore</span>

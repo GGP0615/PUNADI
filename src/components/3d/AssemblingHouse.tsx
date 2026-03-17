@@ -14,31 +14,26 @@ interface MaterialPiece {
   rotation: [number, number, number];
   targetRotation: [number, number, number];
   color: string;
+  emissive: string;
   geometry: "box" | "cylinder" | "dodecahedron";
   args: number[];
 }
 
 function generateHouseTargets(count: number): MaterialPiece[] {
   const pieces: MaterialPiece[] = [];
-  const colors: Record<string, string> = {
-    brick: "#B5370B",
-    steel: "#5A6370",
-    cement: "#7A8B6A",
-    tile: "#D4C4A8",
-    stone: "#6B6158",
-  };
 
-  // Left wall bricks
+  // Left wall bricks — larger, spread wider
   for (let row = 0; row < 6; row++) {
     for (let col = 0; col < 4; col++) {
       if (pieces.length >= count) break;
       pieces.push({
         id: pieces.length, type: "brick",
-        spawnPos: [(Math.random() - 0.5) * 8, 4 + Math.random() * 15, (Math.random() - 0.5) * 6],
-        targetPos: [-2.5 + col * 0.55, -1.5 + row * 0.25, 0],
+        spawnPos: [(Math.random() - 0.5) * 10, 5 + Math.random() * 12, (Math.random() - 0.5) * 4],
+        targetPos: [-2.8 + col * 0.65, -1.2 + row * 0.32, 0],
         rotation: [Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI],
         targetRotation: [0, 0, 0],
-        color: colors.brick, geometry: "box", args: [0.5, 0.22, 0.25],
+        color: "#B5370B", emissive: "#3D1205",
+        geometry: "box", args: [0.6, 0.28, 0.3],
       });
     }
   }
@@ -49,71 +44,75 @@ function generateHouseTargets(count: number): MaterialPiece[] {
       if (pieces.length >= count) break;
       pieces.push({
         id: pieces.length, type: "brick",
-        spawnPos: [(Math.random() - 0.5) * 8, 4 + Math.random() * 15, (Math.random() - 0.5) * 6],
-        targetPos: [0.3 + col * 0.55, -1.5 + row * 0.25, 0],
+        spawnPos: [(Math.random() - 0.5) * 10, 5 + Math.random() * 12, (Math.random() - 0.5) * 4],
+        targetPos: [0.4 + col * 0.65, -1.2 + row * 0.32, 0],
         rotation: [Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI],
         targetRotation: [0, 0, 0],
         color: row % 2 === 0 ? "#B5370B" : "#E8DDD0",
-        geometry: "box", args: [0.5, 0.22, 0.25],
+        emissive: row % 2 === 0 ? "#3D1205" : "#2A2520",
+        geometry: "box", args: [0.6, 0.28, 0.3],
       });
     }
   }
 
-  // Roof steel rods
+  // Roof steel rods — thicker
   for (let i = 0; i < 6; i++) {
     if (pieces.length >= count) break;
     const t = i / 5;
     pieces.push({
       id: pieces.length, type: "steel",
-      spawnPos: [(Math.random() - 0.5) * 8, 6 + Math.random() * 10, (Math.random() - 0.5) * 6],
-      targetPos: [-2 + t * 2, 1.0 + (1 - Math.abs(t - 0.5) * 2) * 1.2, 0],
+      spawnPos: [(Math.random() - 0.5) * 10, 7 + Math.random() * 8, (Math.random() - 0.5) * 4],
+      targetPos: [-2.2 + t * 2.2, 1.2 + (1 - Math.abs(t - 0.5) * 2) * 1.4, 0],
       rotation: [Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI],
       targetRotation: [0, 0, t < 0.5 ? 0.5 : -0.5],
-      color: colors.steel, geometry: "cylinder", args: [0.02, 0.02, 1.2, 8],
+      color: "#6A7380", emissive: "#1A1E24",
+      geometry: "cylinder", args: [0.035, 0.035, 1.5, 8],
     });
     if (pieces.length >= count) break;
     pieces.push({
       id: pieces.length, type: "steel",
-      spawnPos: [(Math.random() - 0.5) * 8, 6 + Math.random() * 10, (Math.random() - 0.5) * 6],
-      targetPos: [t * 2, 1.0 + (1 - Math.abs(t - 0.5) * 2) * 1.2, 0],
+      spawnPos: [(Math.random() - 0.5) * 10, 7 + Math.random() * 8, (Math.random() - 0.5) * 4],
+      targetPos: [t * 2.2, 1.2 + (1 - Math.abs(t - 0.5) * 2) * 1.4, 0],
       rotation: [Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI],
       targetRotation: [0, 0, t < 0.5 ? 0.5 : -0.5],
-      color: colors.steel, geometry: "cylinder", args: [0.02, 0.02, 1.2, 8],
+      color: "#6A7380", emissive: "#1A1E24",
+      geometry: "cylinder", args: [0.035, 0.035, 1.5, 8],
     });
   }
 
-  // Foundation
+  // Foundation blocks — larger
   for (let i = 0; i < 8; i++) {
     if (pieces.length >= count) break;
     pieces.push({
       id: pieces.length, type: i % 2 === 0 ? "cement" : "tile",
-      spawnPos: [(Math.random() - 0.5) * 8, 4 + Math.random() * 15, (Math.random() - 0.5) * 6],
-      targetPos: [-3 + i * 0.75, -1.8, 0],
+      spawnPos: [(Math.random() - 0.5) * 10, 5 + Math.random() * 12, (Math.random() - 0.5) * 4],
+      targetPos: [-3.2 + i * 0.85, -1.6, 0],
       rotation: [Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI],
       targetRotation: [0, 0, 0],
-      color: i % 2 === 0 ? colors.cement : colors.tile,
-      geometry: "box", args: i % 2 === 0 ? [0.45, 0.28, 0.18] : [0.4, 0.04, 0.4],
+      color: i % 2 === 0 ? "#7A8B6A" : "#D4C4A8",
+      emissive: i % 2 === 0 ? "#1E2318" : "#2A2520",
+      geometry: "box", args: i % 2 === 0 ? [0.55, 0.35, 0.22] : [0.5, 0.06, 0.5],
     });
   }
 
-  // Fill remaining with stones
+  // Fill remaining with stones — larger
   while (pieces.length < count) {
     const angle = Math.random() * Math.PI * 2;
-    const dist = 3 + Math.random() * 2;
+    const dist = 3.5 + Math.random() * 2.5;
     pieces.push({
       id: pieces.length, type: "stone",
-      spawnPos: [(Math.random() - 0.5) * 8, 4 + Math.random() * 15, (Math.random() - 0.5) * 6],
-      targetPos: [Math.cos(angle) * dist, -1.5 + Math.random() * 3, Math.sin(angle) * 0.5],
+      spawnPos: [(Math.random() - 0.5) * 10, 5 + Math.random() * 12, (Math.random() - 0.5) * 4],
+      targetPos: [Math.cos(angle) * dist, -1.2 + Math.random() * 3, Math.sin(angle) * 0.5],
       rotation: [Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI],
       targetRotation: [0, Math.random() * Math.PI, 0],
-      color: "#6B6158", geometry: "dodecahedron", args: [0.2, 0],
+      color: "#6B6158", emissive: "#1A1815",
+      geometry: "dodecahedron", args: [0.28, 0],
     });
   }
 
   return pieces;
 }
 
-/** Phase 1: Physics falling — renders as RigidBody, captures resting position */
 function PhysicsPiece({ piece, onRest }: {
   piece: MaterialPiece;
   onRest: (id: number, pos: THREE.Vector3, rot: THREE.Euler) => void;
@@ -125,7 +124,6 @@ function PhysicsPiece({ piece, onRest }: {
     if (reported.current || !rigidRef.current) return;
     const vel = rigidRef.current.linvel();
     const speed = Math.sqrt(vel.x * vel.x + vel.y * vel.y + vel.z * vel.z);
-    // Settled when velocity is very low
     if (speed < 0.05) {
       const t = rigidRef.current.translation();
       const r = rigidRef.current.rotation();
@@ -153,13 +151,18 @@ function PhysicsPiece({ piece, onRest }: {
     >
       <mesh castShadow receiveShadow>
         {geo}
-        <meshStandardMaterial color={piece.color} roughness={0.85} metalness={piece.type === "steel" ? 0.75 : 0.02} />
+        <meshStandardMaterial
+          color={piece.color}
+          emissive={piece.emissive}
+          emissiveIntensity={0.15}
+          roughness={piece.type === "steel" ? 0.35 : 0.82}
+          metalness={piece.type === "steel" ? 0.75 : 0.02}
+        />
       </mesh>
     </RigidBody>
   );
 }
 
-/** Phase 2: Assembly — no physics, lerps from rest position to target on scroll */
 function AssemblyPiece({ piece, restPos, restRot }: {
   piece: MaterialPiece;
   restPos: THREE.Vector3;
@@ -194,7 +197,13 @@ function AssemblyPiece({ piece, restPos, restRot }: {
   return (
     <mesh ref={meshRef} castShadow receiveShadow>
       {geo}
-      <meshStandardMaterial color={piece.color} roughness={0.85} metalness={piece.type === "steel" ? 0.75 : 0.02} />
+      <meshStandardMaterial
+        color={piece.color}
+        emissive={piece.emissive}
+        emissiveIntensity={0.15}
+        roughness={piece.type === "steel" ? 0.35 : 0.82}
+        metalness={piece.type === "steel" ? 0.75 : 0.02}
+      />
     </mesh>
   );
 }
@@ -205,7 +214,6 @@ export function AssemblingHouse({ count = 60 }: { count?: number }) {
   const restPositions = useRef<Map<number, { pos: THREE.Vector3; rot: THREE.Euler }>>(new Map());
   const settledCount = useRef(0);
 
-  // After 4 seconds, force transition to assembly even if not all settled
   useEffect(() => {
     const timer = setTimeout(() => {
       if (phase === "physics") setPhase("assembly");
@@ -217,7 +225,6 @@ export function AssemblingHouse({ count = 60 }: { count?: number }) {
     if (restPositions.current.has(id)) return;
     restPositions.current.set(id, { pos, rot });
     settledCount.current++;
-    // Transition when 80% of pieces have settled
     if (settledCount.current >= count * 0.8 && phase === "physics") {
       setPhase("assembly");
     }
@@ -234,7 +241,6 @@ export function AssemblingHouse({ count = 60 }: { count?: number }) {
     );
   }
 
-  // Assembly phase — pieces lerp to house shape on scroll
   return (
     <group>
       {pieces.map((piece) => {

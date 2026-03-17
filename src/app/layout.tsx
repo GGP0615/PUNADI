@@ -18,6 +18,7 @@ const anekTelugu = Anek_Telugu({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://punadi.com"),
   title: "Punadi — Every Rupee. Every Brick.",
   description:
     "Track your house construction expenses, materials, and progress. Built for Indian homeowners. పునాది — the foundation your home deserves.",

@@ -3,7 +3,6 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { Menu, X } from "lucide-react";
-import { PunadiLogo } from "./PunadiLogo";
 import { useScrollVelocity } from "@/hooks/useScrollVelocity";
 import { MagneticButton } from "./MagneticButton";
 
@@ -41,11 +40,13 @@ export function Nav() {
       transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
       className="fixed left-0 right-0 top-0 z-50 border-b border-white/5 bg-[#0A0A0A]/40 backdrop-blur-2xl backdrop-saturate-150"
     >
-      <div className="mx-auto flex h-[72px] max-w-6xl items-center justify-between px-6">
-        <a href="#" className="flex items-center gap-3">
-          <PunadiLogo className="h-10 w-10" />
-          <span className="font-[var(--font-space-grotesk)] text-lg font-bold text-white">
-            Punadi
+      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
+        <a href="#" className="flex items-center">
+          <span className="font-[var(--font-space-grotesk)] text-xl font-bold tracking-tight text-white">
+            punadi
+          </span>
+          <span className="ml-1 font-[var(--font-space-grotesk)] text-xl font-bold tracking-tight text-amber-500">
+            .
           </span>
         </a>
 
@@ -101,10 +102,12 @@ export function Nav() {
           >
             <div className="flex h-full flex-col px-6 py-6">
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <PunadiLogo className="h-10 w-10" />
-                  <span className="font-[var(--font-space-grotesk)] text-lg font-bold text-white">
-                    Punadi
+                <div className="flex items-center">
+                  <span className="font-[var(--font-space-grotesk)] text-xl font-bold tracking-tight text-white">
+                    punadi
+                  </span>
+                  <span className="ml-1 font-[var(--font-space-grotesk)] text-xl font-bold tracking-tight text-amber-500">
+                    .
                   </span>
                 </div>
                 <button

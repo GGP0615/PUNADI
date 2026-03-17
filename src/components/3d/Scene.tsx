@@ -2,7 +2,6 @@
 
 import { Suspense, useState, useEffect, useRef } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { Physics } from "@react-three/rapier";
 import * as THREE from "three";
 import { AssemblingHouse } from "./AssemblingHouse";
 import { GPUParticles } from "./GPUParticles";
@@ -80,10 +79,8 @@ function SceneContent() {
       {/* Camera rig */}
       <CameraRig />
 
-      {/* Physics-based falling materials */}
-      <Physics gravity={[0, -9.81, 0]}>
-        <AssemblingHouse count={materialCount} />
-      </Physics>
+      {/* Falling materials — pure Three.js animation, no WASM */}
+      <AssemblingHouse count={materialCount} />
 
       {/* Delayed extras */}
       {showExtras && (

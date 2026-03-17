@@ -16,6 +16,7 @@ const vertexShader = `
 const fragmentShader = `
   uniform float uTime;
   uniform float uScroll;
+  uniform float uWallPhase;
   varying vec2 vUv;
 
   // Simplex noise helpers
@@ -61,7 +62,8 @@ const fragmentShader = `
     vec3 gold    = vec3(0.85, 0.55, 0.12);      // gold
 
     float s = uScroll;
-    vec3 baseColor = mix(warm, tension, smoothstep(0.1, 0.3, s));
+    // During wall phase, shift toward tension red
+    vec3 baseColor = mix(warm, tension, max(smoothstep(0.1, 0.3, s), uWallPhase * 0.6));
     baseColor = mix(baseColor, clarity, smoothstep(0.3, 0.55, s));
     baseColor = mix(baseColor, warm, smoothstep(0.55, 0.75, s));
     baseColor = mix(baseColor, gold, smoothstep(0.85, 1.0, s));
@@ -88,6 +90,7 @@ export function GradientMesh() {
     () => ({
       uTime: { value: 0 },
       uScroll: { value: 0 },
+      uWallPhase: { value: 0 },
     }),
     []
   );
@@ -95,8 +98,14 @@ export function GradientMesh() {
   useFrame((state) => {
     if (!meshRef.current) return;
     const mat = meshRef.current.material as THREE.ShaderMaterial;
-    mat.uniforms.uTime.value = state.clock.getElapsedTime();
+    const elapsed = state.clock.getElapsedTime();
+    mat.uniforms.uTime.value = elapsed;
     mat.uniforms.uScroll.value = scrollProgress.get();
+    // Wall phase: 0→1 over first 4s (tension red), then 1→0 over 2s (back to warm after crack)
+    const wallPhase = elapsed < 4.0
+      ? Math.min(elapsed / 3.0, 1.0)
+      : Math.max(1.0 - (elapsed - 4.0) / 2.0, 0.0);
+    mat.uniforms.uWallPhase.value = wallPhase;
   });
 
   return (

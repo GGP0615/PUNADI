@@ -1,19 +1,19 @@
 "use client";
 
-import { Suspense, useState, useEffect, useRef } from "react";
+import { Suspense, useState, useEffect, useRef, useCallback } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
-import { AssemblingHouse } from "./AssemblingHouse";
+import { BlueprintFloorplan } from "./BlueprintFloorplan";
 import { GPUParticles } from "./GPUParticles";
 import { GradientMesh } from "./GradientMesh";
 import { getDeviceTier } from "@/lib/deviceTier";
+import { ChaosWall } from "@/components/ChaosWall";
 
 function CameraRig() {
   const { camera } = useThree();
 
   useFrame((state) => {
     const t = state.clock.getElapsedTime();
-    // Very slow, subtle orbital drift
     camera.position.x = Math.sin(t * 0.08) * 0.5;
     camera.position.y = Math.sin(t * 0.06) * 0.3;
     camera.position.z = 8 + Math.sin(t * 0.05) * 0.3;
@@ -33,39 +33,19 @@ function SceneContent() {
     return () => clearTimeout(timer);
   }, []);
 
-  const shapeCount = tier === "low" ? 12 : 18;
   const particleCount = tier === "high" ? 600 : tier === "medium" ? 300 : 120;
 
   return (
     <>
-      {/* Soft, atmospheric lighting */}
       <ambientLight intensity={0.25} color="#FFF8F0" />
-
-      {/* Key light — warm amber from upper right */}
-      <directionalLight
-        position={[6, 6, 4]}
-        intensity={1.2}
-        color="#FFE4C0"
-        castShadow
-      />
-
-      {/* Fill light — cool teal from left */}
-      <directionalLight
-        position={[-5, 3, 2]}
-        intensity={0.4}
-        color="#1A6B6A"
-      />
-
-      {/* Back rim light — creates edge glow */}
+      <directionalLight position={[6, 6, 4]} intensity={1.2} color="#FFE4C0" castShadow />
+      <directionalLight position={[-5, 3, 2]} intensity={0.4} color="#1A6B6A" />
       <pointLight position={[0, 2, -6]} intensity={0.6} color="#D4860A" />
-
-      {/* Bottom warm bounce */}
       <pointLight position={[0, -4, 0]} intensity={0.2} color="#C17817" />
-
       <CameraRig />
 
-      {/* Abstract floating construction shapes */}
-      <AssemblingHouse count={shapeCount} />
+      {/* Blueprint floor plan draws itself after wall reveal */}
+      <BlueprintFloorplan />
 
       {showExtras && (
         <>
@@ -79,9 +59,14 @@ function SceneContent() {
 
 export function HeroScene() {
   const [mounted, setMounted] = useState(false);
+  const [wallComplete, setWallComplete] = useState(false);
 
   useEffect(() => {
     setMounted(true);
+  }, []);
+
+  const handleWallComplete = useCallback(() => {
+    setWallComplete(true);
   }, []);
 
   if (!mounted) {
@@ -103,63 +88,94 @@ export function HeroScene() {
         e.currentTarget.style.setProperty("--spotlight-y", `${y}%`);
       }}
     >
-      <Canvas
-        shadows
-        camera={{ position: [0, 0, 8], fov: 45 }}
-        dpr={[1, 2]}
-        gl={{ antialias: true, alpha: true, toneMapping: THREE.ACESFilmicToneMapping, toneMappingExposure: 1.2 }}
-        style={{ background: "#0A0A0A" }}
+      {/* 3D Canvas — emerges from the crack with slow scale + fade */}
+      <div
+        className={`absolute inset-0 ${wallComplete ? "hero-scene-emerge" : ""}`}
+        style={{ opacity: wallComplete ? undefined : 0 }}
       >
-        <Suspense fallback={null}>
-          <SceneContent />
-        </Suspense>
-      </Canvas>
+        <Canvas
+          shadows
+          camera={{ position: [0, 0, 8], fov: 45 }}
+          dpr={[1, 2]}
+          gl={{ antialias: true, alpha: true, toneMapping: THREE.ACESFilmicToneMapping, toneMappingExposure: 1.2 }}
+          style={{ background: "#0A0A0A" }}
+        >
+          <Suspense fallback={null}>
+            <SceneContent />
+          </Suspense>
+        </Canvas>
+      </div>
 
-      {/* Light beam sweep */}
-      <div className="light-beam" />
+      {/* Chaos Wall */}
+      <ChaosWall onComplete={handleWallComplete} />
+
+      {/* Warm afterglow — residual light from the crack that settles into ambient warmth */}
+      {wallComplete && (
+        <div className="absolute inset-0 z-[2] pointer-events-none hero-afterglow" />
+      )}
 
       {/* Soft vignette */}
       <div
-        className="pointer-events-none absolute inset-0 z-[1]"
-        style={{
-          boxShadow: "inset 0 0 200px 80px rgba(0,0,0,0.6)",
-        }}
+        className="pointer-events-none absolute inset-0 z-[3]"
+        style={{ boxShadow: "inset 0 0 200px 80px rgba(0,0,0,0.6)" }}
       />
 
-      {/* HTML Overlay */}
-      <div className="pointer-events-none absolute inset-0 z-[2] flex flex-col items-center justify-center">
+      {/* ─── Hero text overlay ─── */}
+      <div className="pointer-events-none absolute inset-0 z-[4] flex flex-col items-center justify-center">
+
+        {/* Telugu badge */}
         <div
-          className="animate-fade-in-up opacity-0"
-          style={{ animationDelay: "0.5s", animationFillMode: "forwards" }}
+          className={`opacity-0 ${wallComplete ? "hero-text-reveal" : "invisible"}`}
+          style={{ animationDelay: wallComplete ? "0.4s" : "99s" }}
         >
-          <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-amber-500/20 bg-amber-500/10 px-4 py-1.5 backdrop-blur-md">
+          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-amber-500/20 bg-amber-500/10 px-4 py-1.5 backdrop-blur-md">
             <span className="text-xs font-medium text-amber-400 telugu-typewriter">
               పునాది — Foundation
             </span>
           </div>
         </div>
 
-        <h1
-          className="animate-fade-in-up font-[var(--font-space-grotesk)] text-6xl font-bold tracking-tight text-white opacity-0 sm:text-7xl lg:text-8xl drop-shadow-[0_4px_30px_rgba(0,0,0,0.9)]"
-          style={{ animationDelay: "0.8s", animationFillMode: "forwards" }}
-        >
-          <span className="block">Every rupee.</span>
-          <span className="block gradient-text-animated">
-            Every brick.
+        {/* Main headline — each line is its own reveal beat */}
+        <h1 className="font-[var(--font-space-grotesk)] text-center">
+          <span
+            className={`block text-6xl sm:text-7xl lg:text-8xl font-bold tracking-tight text-white opacity-0 drop-shadow-[0_4px_30px_rgba(0,0,0,0.9)] ${wallComplete ? "hero-text-reveal" : "invisible"}`}
+            style={{ animationDelay: wallComplete ? "0.7s" : "99s" }}
+          >
+            Every rupee.
+          </span>
+          <span
+            className={`block text-6xl sm:text-7xl lg:text-8xl font-bold tracking-tight opacity-0 drop-shadow-[0_4px_30px_rgba(0,0,0,0.9)] ${wallComplete ? "hero-text-reveal" : "invisible"}`}
+            style={{ animationDelay: wallComplete ? "1.0s" : "99s" }}
+          >
+            {/* Light sweep container */}
+            <span className="hero-gradient-text-wrap relative inline-block">
+              <span className="gradient-text-animated">Every brick.</span>
+              {wallComplete && <span className="hero-light-sweep" />}
+            </span>
+          </span>
+
+          {/* "No more chaos." — the punchline, connects back to the wall */}
+          <span
+            className={`block text-2xl sm:text-3xl lg:text-4xl mt-3 font-normal opacity-0 ${wallComplete ? "hero-punchline-reveal" : "invisible"}`}
+            style={{ animationDelay: wallComplete ? "1.6s" : "99s" }}
+          >
+            <span className="etched-text text-white/50">No more chaos.</span>
           </span>
         </h1>
 
+        {/* Subtitle */}
         <p
-          className="animate-fade-in-up mt-6 max-w-lg px-6 text-center text-lg text-[#A3A3A3] opacity-0 drop-shadow-[0_2px_12px_rgba(0,0,0,0.9)]"
-          style={{ animationDelay: "1.1s", animationFillMode: "forwards" }}
+          className={`mt-6 max-w-lg px-6 text-center text-lg text-[#A3A3A3] opacity-0 drop-shadow-[0_2px_12px_rgba(0,0,0,0.9)] ${wallComplete ? "hero-text-reveal" : "invisible"}`}
+          style={{ animationDelay: wallComplete ? "2.0s" : "99s" }}
         >
           Track your house construction. Every expense. Every material. Every
           day.
         </p>
 
+        {/* CTA */}
         <div
-          className="animate-fade-in-up pointer-events-auto mt-8 flex gap-4 opacity-0"
-          style={{ animationDelay: "1.4s", animationFillMode: "forwards" }}
+          className={`pointer-events-auto mt-8 flex gap-4 opacity-0 ${wallComplete ? "hero-text-reveal" : "invisible"}`}
+          style={{ animationDelay: wallComplete ? "2.4s" : "99s" }}
         >
           <a
             href="#waitlist"
@@ -185,8 +201,8 @@ export function HeroScene() {
 
         {/* Scroll indicator */}
         <div
-          className="animate-fade-in-up absolute bottom-8 opacity-0"
-          style={{ animationDelay: "2s", animationFillMode: "forwards" }}
+          className={`absolute bottom-8 opacity-0 ${wallComplete ? "hero-text-reveal" : "invisible"}`}
+          style={{ animationDelay: wallComplete ? "3.0s" : "99s" }}
         >
           <div className="flex flex-col items-center gap-2">
             <span className="text-xs text-[#525252]">Scroll to explore</span>

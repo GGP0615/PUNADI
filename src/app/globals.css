@@ -393,6 +393,447 @@
   );
 }
 
+/* ═══ CHAOS WALL — CONCRETE TEXTURE ═══ */
+.concrete-wall {
+  background:
+    linear-gradient(135deg, rgba(40,38,35,0.95) 0%, rgba(22,20,18,1) 50%, rgba(35,33,30,0.95) 100%);
+  background-blend-mode: overlay;
+}
+
+.concrete-wall::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.12;
+  background-image:
+    radial-gradient(ellipse at 20% 50%, rgba(193,120,23,0.1), transparent 50%),
+    radial-gradient(ellipse at 80% 30%, rgba(193,120,23,0.06), transparent 40%),
+    radial-gradient(ellipse at 50% 80%, rgba(120,80,30,0.05), transparent 35%);
+}
+
+.concrete-wall::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.08;
+  background: repeating-conic-gradient(
+    rgba(255,255,255,0.03) 0% 25%,
+    transparent 0% 50%
+  ) 0 0 / 3px 3px;
+  mix-blend-mode: overlay;
+}
+
+/* ═══ NOTEBOOK RULED LINES ═══ */
+.chaos-notebook-lines {
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 79px,
+    rgba(255, 255, 255, 0.025) 79px,
+    rgba(255, 255, 255, 0.025) 80px
+  );
+}
+
+/* ═══ CHAOS TEXT ETCH ═══ */
+@keyframes chaos-text-etch {
+  0% {
+    opacity: 0;
+    clip-path: inset(0 100% 0 0);
+    filter: blur(2px);
+  }
+  40% {
+    clip-path: inset(0 20% 0 0);
+    filter: blur(0.5px);
+    opacity: 0.2;
+  }
+  70% {
+    clip-path: inset(0 0 0 0);
+    filter: blur(0);
+    opacity: 0.4;
+  }
+  100% {
+    clip-path: inset(0 0 0 0);
+    filter: blur(0);
+    opacity: var(--etch-final-opacity, 0.7);
+  }
+}
+
+.chaos-text-etch {
+  animation: chaos-text-etch 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.chaos-strikethrough {
+  text-decoration: line-through;
+  text-decoration-color: rgba(239, 68, 68, 0.6);
+  text-decoration-thickness: 2px;
+  text-decoration-style: wavy;
+}
+
+/* ═══ CORRECTION APPEAR ═══ */
+@keyframes correction-appear {
+  0% {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  100% {
+    opacity: 0.7;
+    transform: translateY(0);
+  }
+}
+
+.chaos-correction-appear {
+  animation: correction-appear 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* ═══ NUMBER JITTER (TENSION) ═══ */
+@keyframes number-jitter {
+  0%, 100% { transform: translate(0, 0); }
+  10% { transform: translate(1.5px, -1px); }
+  30% { transform: translate(-1px, 1.5px); }
+  50% { transform: translate(1px, 0.5px); }
+  70% { transform: translate(-1.5px, -0.5px); }
+  90% { transform: translate(0.5px, 1px); }
+}
+
+.number-jitter {
+  animation: number-jitter 0.12s ease-in-out infinite;
+}
+
+/* ═══ TENSION EDGE PULSE ═══ */
+@keyframes tension-pulse {
+  0%, 100% {
+    box-shadow: inset 0 0 100px 30px rgba(153, 27, 27, 0);
+  }
+  50% {
+    box-shadow: inset 0 0 100px 30px rgba(153, 27, 27, 0.12);
+  }
+}
+
+@keyframes tension-pulse-intense {
+  0%, 100% {
+    box-shadow: inset 0 0 120px 50px rgba(153, 27, 27, 0.05);
+  }
+  50% {
+    box-shadow: inset 0 0 120px 50px rgba(153, 27, 27, 0.25);
+  }
+}
+
+.chaos-tension-pulse {
+  animation: tension-pulse 1.2s ease-in-out infinite;
+}
+
+.chaos-tension-pulse-intense {
+  animation: tension-pulse-intense 0.6s ease-in-out infinite;
+}
+
+/* ═══ SCREEN SHAKE ═══ */
+@keyframes chaos-shake {
+  0% { transform: translate(0, 0); }
+  10% { transform: translate(-4px, 2px); }
+  20% { transform: translate(3px, -3px); }
+  30% { transform: translate(-2px, 4px); }
+  40% { transform: translate(4px, -1px); }
+  50% { transform: translate(-3px, 2px); }
+  60% { transform: translate(2px, -2px); }
+  70% { transform: translate(-1px, 3px); }
+  80% { transform: translate(1px, -1px); }
+  90% { transform: translate(-1px, 0); }
+  100% { transform: translate(0, 0); }
+}
+
+.chaos-wall-shake {
+  animation: chaos-shake 0.35s ease-out;
+}
+
+/* ═══ WHITE FLASH ═══ */
+@keyframes chaos-flash {
+  0% { opacity: 0; }
+  15% { opacity: 0.7; }
+  100% { opacity: 0; }
+}
+
+.chaos-flash {
+  background: white;
+  animation: chaos-flash 0.4s ease-out forwards;
+}
+
+/* ═══ WALL CRACK ANIMATIONS ═══ */
+.wall-crack-hairline {
+  stroke-dasharray: 1600;
+  stroke-dashoffset: 1600;
+  animation: crack-draw 1.2s ease-in-out forwards;
+}
+
+@keyframes crack-draw {
+  to { stroke-dashoffset: 0; }
+}
+
+.wall-crack-open {
+  stroke-dasharray: none;
+  filter: drop-shadow(0 0 12px rgba(255, 200, 100, 0.9))
+          drop-shadow(0 0 30px rgba(255, 180, 80, 0.4));
+}
+
+.wall-crack-branch {
+  stroke-dasharray: 200;
+  stroke-dashoffset: 200;
+  animation: crack-draw 0.4s ease-out var(--branch-delay, 0.1s) forwards;
+}
+
+/* ═══ WALL FRAGMENT SPLIT ═══ */
+@keyframes fragment-exit-left {
+  0% {
+    transform: translateX(0) rotate(0) scale(1);
+    opacity: 1;
+  }
+  30% {
+    transform: translateX(-5%) rotate(-0.5deg) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(-70%) rotate(-4deg) scale(0.8);
+    opacity: 0;
+  }
+}
+
+@keyframes fragment-exit-right {
+  0% {
+    transform: translateX(0) rotate(0) scale(1);
+    opacity: 1;
+  }
+  30% {
+    transform: translateX(5%) rotate(0.5deg) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(70%) rotate(4deg) scale(0.8);
+    opacity: 0;
+  }
+}
+
+.wall-fragment-left {
+  animation: fragment-exit-left 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.wall-fragment-right {
+  animation: fragment-exit-right 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ═══ DUST PARTICLES ═══ */
+@keyframes dust-burst {
+  0% {
+    opacity: 0.9;
+    transform: translate(0, 0) scale(1);
+  }
+  60% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--dust-dx, 40px), var(--dust-dy, -30px)) scale(0.2);
+  }
+}
+
+.dust-particle {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  background: rgba(200, 180, 150, 0.8);
+  border-radius: 50%;
+  box-shadow: 0 0 4px rgba(200, 180, 150, 0.3);
+  animation: dust-burst var(--dust-duration, 600ms) ease-out var(--dust-delay, 0ms) forwards;
+}
+
+/* ═══ LIGHT BLEED THROUGH CRACK ═══ */
+.chaos-light-bleed {
+  width: 4px;
+  height: 100vh;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(255, 200, 100, 0.4) 15%,
+    rgba(255, 220, 130, 0.8) 50%,
+    rgba(255, 200, 100, 0.4) 85%,
+    transparent 100%
+  );
+  filter: blur(15px);
+  animation: light-bleed-grow 1.2s ease-out forwards;
+}
+
+@keyframes light-bleed-grow {
+  0% {
+    width: 0;
+    filter: blur(4px);
+    opacity: 0;
+  }
+  40% {
+    width: 30px;
+    filter: blur(12px);
+    opacity: 0.8;
+  }
+  100% {
+    width: 120px;
+    filter: blur(40px);
+    opacity: 1;
+  }
+}
+
+/* ═══ ETCHED TEXT (POST-REVEAL) ═══ */
+.etched-text {
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.05),
+    0 -1px 0 rgba(0, 0, 0, 0.8),
+    0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+/* ═══ CHAOS WALL CONTAINER ═══ */
+.chaos-wall {
+  background: #0A0A0A;
+}
+
+/* ═══ POST-REVEAL: SCENE EMERGE ═══ */
+/* 3D canvas scales up from 0.92 with slow 2.5s fade — feels like breathing in */
+@keyframes hero-scene-emerge {
+  0% {
+    opacity: 0;
+    transform: scale(0.92);
+    filter: blur(4px);
+  }
+  40% {
+    opacity: 0.6;
+    filter: blur(1px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0);
+  }
+}
+
+.hero-scene-emerge {
+  animation: hero-scene-emerge 2.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ═══ POST-REVEAL: WARM AFTERGLOW ═══ */
+/* Residual warmth from the crack — starts bright amber, settles to subtle ambient */
+@keyframes hero-afterglow {
+  0% {
+    opacity: 0.8;
+    background: radial-gradient(
+      ellipse 60% 50% at 50% 50%,
+      rgba(255, 200, 100, 0.25) 0%,
+      rgba(193, 120, 23, 0.12) 30%,
+      transparent 70%
+    );
+  }
+  50% {
+    opacity: 0.5;
+    background: radial-gradient(
+      ellipse 70% 60% at 50% 50%,
+      rgba(255, 200, 100, 0.12) 0%,
+      rgba(193, 120, 23, 0.06) 40%,
+      transparent 70%
+    );
+  }
+  100% {
+    opacity: 0.3;
+    background: radial-gradient(
+      ellipse 80% 70% at 50% 50%,
+      rgba(255, 200, 100, 0.06) 0%,
+      rgba(193, 120, 23, 0.03) 40%,
+      transparent 70%
+    );
+  }
+}
+
+.hero-afterglow {
+  animation: hero-afterglow 4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ═══ POST-REVEAL: TEXT REVEAL ═══ */
+/* Scale up from 0.85 + blur to sharp + fade in — text emerges from the light */
+@keyframes hero-text-reveal {
+  0% {
+    opacity: 0;
+    transform: translateY(30px) scale(0.85);
+    filter: blur(8px);
+  }
+  50% {
+    opacity: 0.7;
+    filter: blur(2px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+.hero-text-reveal {
+  animation: hero-text-reveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ═══ POST-REVEAL: PUNCHLINE ═══ */
+/* "No more chaos." — fades in softly with a gentle rise, separate from the headline energy */
+@keyframes hero-punchline-reveal {
+  0% {
+    opacity: 0;
+    transform: translateY(12px);
+    letter-spacing: 0.15em;
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    letter-spacing: 0.05em;
+  }
+}
+
+.hero-punchline-reveal {
+  animation: hero-punchline-reveal 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ═══ POST-REVEAL: LIGHT SWEEP ACROSS HEADLINE ═══ */
+@keyframes hero-light-sweep {
+  0% {
+    left: -40%;
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    left: 120%;
+    opacity: 0;
+  }
+}
+
+.hero-gradient-text-wrap {
+  overflow: hidden;
+  position: relative;
+}
+
+.hero-light-sweep {
+  position: absolute;
+  top: 0;
+  left: -40%;
+  width: 35%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.15) 40%,
+    rgba(255, 255, 255, 0.3) 50%,
+    rgba(255, 255, 255, 0.15) 60%,
+    transparent 100%
+  );
+  pointer-events: none;
+  animation: hero-light-sweep 1.8s cubic-bezier(0.4, 0, 0.2, 1) 1.4s forwards;
+  mix-blend-mode: overlay;
+}
+
 /* ═══ REDUCED MOTION ═══ */
 @media (prefers-reduced-motion: reduce) {
   .gradient-text-animated {
@@ -408,5 +849,42 @@
   .animate-fade-in-up {
     animation: none;
     opacity: 1;
+  }
+  .chaos-text-etch,
+  .number-jitter,
+  .chaos-tension-pulse,
+  .chaos-tension-pulse-intense,
+  .chaos-wall-shake,
+  .chaos-flash,
+  .chaos-correction-appear,
+  .hero-scene-emerge,
+  .hero-afterglow,
+  .hero-light-sweep {
+    animation: none;
+  }
+  .chaos-text-etch {
+    opacity: 0.7;
+    clip-path: none;
+    filter: none;
+  }
+  .hero-text-reveal,
+  .hero-punchline-reveal {
+    animation: none;
+    opacity: 1;
+    filter: none;
+  }
+  .hero-scene-emerge {
+    opacity: 1;
+    filter: none;
+  }
+  .wall-fragment-left,
+  .wall-fragment-right {
+    animation: none;
+  }
+  .dust-particle {
+    display: none;
+  }
+  .chaos-wall {
+    display: none;
   }
 }

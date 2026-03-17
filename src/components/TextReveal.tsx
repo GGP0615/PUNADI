@@ -23,8 +23,8 @@ const modeVariants: Record<RevealMode, { hidden: any; visible: any }> = {
     visible: { opacity: 1, x: 0 },
   },
   clipReveal: {
-    hidden: { opacity: 0, clipPath: "inset(0 100% 0 0)" },
-    visible: { opacity: 1, clipPath: "inset(0 0% 0 0)" },
+    hidden: { opacity: 0, y: 20, scale: 0.98 },
+    visible: { opacity: 1, y: 0, scale: 1 },
   },
   blur: {
     hidden: { opacity: 0, filter: "blur(12px)", y: 10 },

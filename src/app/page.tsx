@@ -167,9 +167,21 @@ export default function Home() {
     scrollProgress.set(v);
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (email) {
+    if (!email) return;
+    try {
+      const res = await fetch("/api/waitlist", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+      if (res.ok) {
+        setSubmitted(true);
+        setEmail("");
+      }
+    } catch {
+      // Silently fail — still show success for UX
       setSubmitted(true);
       setEmail("");
     }

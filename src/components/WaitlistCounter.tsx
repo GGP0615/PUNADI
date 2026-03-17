@@ -8,15 +8,29 @@ export function WaitlistCounter() {
   const inView = useInView(ref, { once: false });
   const reduced = useReducedMotion();
 
-  // Base count — randomized only after mount to avoid hydration mismatch
+  // Start with a base count, fetch real count on mount
   const [count, setCount] = useState(200);
   const initialized = useRef(false);
 
   useEffect(() => {
-    if (!initialized.current) {
-      initialized.current = true;
-      setCount(200 + Math.floor(Math.random() * 50));
-    }
+    if (initialized.current) return;
+    initialized.current = true;
+
+    fetch("/api/waitlist")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.count && data.count > 0) {
+          // Real count + base offset so it never looks empty
+          setCount(200 + data.count);
+        } else {
+          // Fallback: randomized fake count
+          setCount(200 + Math.floor(Math.random() * 50));
+        }
+      })
+      .catch(() => {
+        // KV not connected yet — use fake count
+        setCount(200 + Math.floor(Math.random() * 50));
+      });
   }, []);
 
   useEffect(() => {
